@@ -76,6 +76,9 @@ RUN service postgresql start && \
 		make -C samples/postgres load_ref_annotation_GSE8581 && \
 		make -C samples/postgres load_expression_GSE8581"
 
+# PostgreSQL config
+RUN echo "host		all		postgres		0.0.0.0/0		md5" >> /etc/postgresql/9.3/main/pg_hba.conf
+RUN sed -i 's/'localhost'/'*'/' /etc/postgresql/9.3/main/postgresql.conf
 
 # --------------
 

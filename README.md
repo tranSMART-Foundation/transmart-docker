@@ -24,14 +24,17 @@ The amount of RAM is the critical part, at least 4GB should be assigned to the J
     git clone https://github.com/grumpycatt/transmart-docker.git
     cd transmart-docker
     docker build --rm -t myrepo/transmart .
-    docker run -d -p 8080:8080 myrepo/transmart --name transmart
+    docker run -d -p 80:8080 5432:5432 8983:8983 myrepo/transmart --name transmart
 
+#### Access
+
+    Launch your favorite browser and go to http://transmartIP/transmart
 
 #### Debug and core components
 Look at running processes into your container with :
 
     docker ps
-    docker exec my_container ps axuf
+    docker exec transmart ps axuf
 
 There must be at least 4 processes :
 - PostgreSQL
@@ -42,8 +45,7 @@ There must be at least 4 processes :
 Probe your network access :
 
     docker exec transmart netstat -tlup
-    nc localhost 8080 -v
-    curl http://localhost:8080
+    nc localhost 80 -v
 
 Check the logs :
 
