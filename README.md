@@ -12,7 +12,8 @@ Pull requests are welcome.
 ## Deployment
 This is an all-in-one tranSMART setup thus it should not be used for production. The database, R, and Tomcat should be splitted in order to achieve a good througtput.
 
-The amount of RAM is the critical part, at least 4GB should be assigned to the JVM for tranSMART to run properly, 10GB of disk free and 2VCPU are enough for the rest.
+The amount of RAM is the critical part, at least 4GB should be assigned to the JVM for tranSMART to run properly.
+10GB of disk free are recommended, the built image taking 6GB at its creation and 2VCPU are enough for the rest.
 
 ### How to start
 
@@ -22,16 +23,34 @@ The amount of RAM is the critical part, at least 4GB should be assigned to the J
 #### Build and run on your own (advanced)
     git clone https://github.com/grumpycatt/transmart-docker.git
     cd transmart-docker
-    docker build --rm --no-cache -t myrepo/transmart .
-    docker run -d -p 8080:8080 myrepo/transmart
+    docker build --rm -t myrepo/transmart .
+    docker run -d -p 8080:8080 myrepo/transmart --name transmart
 
 
 #### Debug and core components
-* PostgreSQL 9.x
+Look at running processes into your container with :
+
+    docker ps
+    docker exec my_container ps axuf
+
+There must be at least 4 processes :
+- PostgreSQL
+- Java/Tomcat
+- R
+- SolR
+
+Probe your network access :
+
+    docker exec transmart netstat -tlup
+    nc localhost 8080 -v
+    curl http://localhost:8080
+
+Check the logs :
+
+    docker logs transmart
+
+* PostgreSQL 9.3
 * Tomcat7
 * Oracle JDK 1.8u45
-* git
 * tranSMART 1.2.x
-
-
-    docker exec my_container ps axuf
+* Groovy 2.4.3
