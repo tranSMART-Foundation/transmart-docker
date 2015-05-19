@@ -24,7 +24,7 @@ The amount of RAM is the critical part, at least 4GB should be assigned to the J
     git clone https://github.com/grumpycatt/transmart-docker.git
     cd transmart-docker
     docker build --rm -t myrepo/transmart .
-    docker run -d -p 80:8080 5432:5432 8983:8983 myrepo/transmart --name transmart
+    docker run -d -p 80:8080 5432:5432 8983:8983 --name transmart myrepo/transmart
 
 #### Access
 
