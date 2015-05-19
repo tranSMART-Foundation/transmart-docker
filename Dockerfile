@@ -105,8 +105,8 @@ RUN wget -q --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3
 # --------------
 
 # tranSMART Config
-ADD Config-eTRIKS.groovy /usr/share/tomcat7/.grails/transmartConfig/Config.groovy
-ADD tomcat7 /etc/default/tomcat7
+ADD includes/Config-eTRIKS.groovy /usr/share/tomcat7/.grails/transmartConfig/Config.groovy
+ADD includes/tomcat7 /etc/default/tomcat7
 
 # WAR
 RUN wget -q -O /var/lib/tomcat7/webapps/transmart.war "$war_url"

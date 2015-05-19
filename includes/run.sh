@@ -1,6 +1,6 @@
 #!/bin/bash
 
-initctl start rserve
+/opt/R/bin/R CMD Rserve --slave --vanilla --RS-conf /etc/Rserve.conf
 service postgresql start
 screen -AdmS SolR make -C /tmp/transmart-data/solr/ start
 service tomcat7 start
