@@ -1,26 +1,31 @@
-# A dockerfile in order to generate a tranSMART ready to go container
+## A dockerfile to generate an eTRIKS-tranSMART ready to go container
 
-## Author
-There is few versions and perceptions of this setup, here is the list of what I know :
-* [QuartzBio](https://github.com/quartzbio/transmart-docker)
-* [io-informatics](https://github.com/io-informatics/transmart-docker)
-
-Here is another Dockerfile with an emphasis on best practices and performance regarding to tranSMART ecosystem.
-
+## Purpose of this Dockerfile
+Here is a Dockerfile with an emphasis on best practices and performance regarding to tranSMART ecosystem.
 Pull requests are welcome.
 
 ## Deployment
-This is an all-in-one tranSMART setup thus it should not be used for production. The database, R, and Tomcat should be splitted in order to achieve a good througtput.
+This is an all-in-one tranSMART setup thus it should be used only for the test of eTRIKS platform.
+In general the database, R, and Tomcat should be split in order to achieve a good througtput.
 
-The amount of RAM is the critical part, at least 4GB should be assigned to the JVM for tranSMART to run properly.
-10GB of disk free are recommended, the built image taking 6GB at its creation and 2VCPU are enough for the rest.
+The amount of RAM is the critical part, at least 4GB should be assigned to the container.
+
+Minimum requirements :
+- 2VCPU
+- 4GB
+- 10GB
+
+Recommended requirements :
+- 4VCPU
+- 8GB
+- 15GB
 
 ### How to start
 
-#### Run the container from Docker Registry (easy)
+#### Build and run on your own eTRIKS-tranSMART container
 
+These commands will deploy an eTRIKS-tranSMART environnment with the latest tranSMART 1.2.2e
 
-#### Build and run on your own (advanced)
     git clone https://github.com/grumpycatt/transmart-docker.git
     cd transmart-docker
     docker build --rm -t myrepo/transmart .
@@ -31,16 +36,17 @@ The amount of RAM is the critical part, at least 4GB should be assigned to the J
     Launch your favorite browser and go to http://transmartIP/transmart
 
 #### Debug and core components
+
 Look at running processes into your container with :
 
     docker ps
     docker exec transmart ps axuf
 
 There must be at least 4 processes :
-- PostgreSQL
-- Java/Tomcat
-- R
-- SolR
+* PostgreSQL
+* Java/Tomcat
+* R
+* SolR
 
 Probe your network access :
 
@@ -51,8 +57,15 @@ Check the logs :
 
     docker logs transmart
 
+#### Essential components used
+
 * PostgreSQL 9.3
 * Tomcat7
 * Oracle JDK 1.8u45
 * tranSMART 1.2.x
 * Groovy 2.4.3
+
+## Other Docker deployments
+There is few versions and perceptions of this setup, here is the list of what I know :
+* [QuartzBio](https://github.com/quartzbio/transmart-docker)
+* [io-informatics](https://github.com/io-informatics/transmart-docker)
