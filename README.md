@@ -10,6 +10,8 @@ In general the database, R, and Tomcat should be split in order to achieve a goo
 
 The amount of RAM is the critical part, at least 4GB should be assigned to the container.
 
+### Pre-requisites
+
 Minimum requirements :
 - 2VCPU
 - 4GB
@@ -19,6 +21,13 @@ Recommended requirements :
 - 4VCPU
 - 8GB
 - 15GB
+
+This is a **Dockerfile** which **needs** a special compute host with **Docker engine** installed on it. To proceed to, you can follow few steps described
+on the official Docker website.
+
+- For Debian follow : https://docs.docker.com/installation/debian/
+- For Ubuntu follow : https://docs.docker.com/installation/ubuntulinux/
+- For CentOS follow : https://docs.docker.com/installation/centos/
 
 ### How to start
 
