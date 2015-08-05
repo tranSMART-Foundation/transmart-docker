@@ -72,7 +72,7 @@ Check the logs :
 * Tomcat7
 * Oracle JDK 1.8u51
 * tranSMART 1.2.x
-* Groovy 2.4.3
+* Groovy 2.4.4
 
 ## Other Docker deployments
 There is few versions and perceptions of this setup, here is the list of what I know :
