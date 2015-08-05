@@ -67,7 +67,7 @@ RUN bash -c "make -C env /var/lib/postgresql/tablespaces && \
 RUN bash -c "curl -s get.gvmtool.net | bash && \
     source "$HOME/.gvm/bin/gvm-init.sh" && \
     gvm install groovy && \
-    gvm default groovy 2.4.3"
+    gvm default groovy 2.4.4"
 
 # Public data loading
 RUN service postgresql start && \
