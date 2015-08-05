@@ -70,7 +70,7 @@ Check the logs :
 
 * PostgreSQL 9.3
 * Tomcat7
-* Oracle JDK 1.8u45
+* Oracle JDK 1.8u51
 * tranSMART 1.2.x
 * Groovy 2.4.3
 
