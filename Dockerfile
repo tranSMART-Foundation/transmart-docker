@@ -98,9 +98,9 @@ RUN wget -q "$r_debpackage_url" -O RRO.deb && \
     wget -q "$r_rserve_url" -O Rserve.tar.gz && \
     dpkg -i RRO.deb && \
     tar xzf RevoMath.tar.gz && \
-    R CMD BATCH --slave R_pkgs_cran.R && \
-    R CMD BATCH --slave R_pkgs_bioconductor.R && \
-    R CMD BATCH --slave R_pkgs_update.R && \
+    R CMD BATCH R_pkgs_cran.R && \
+    R CMD BATCH R_pkgs_bioconductor.R && \
+    R CMD BATCH R_pkgs_update.R && \
     R CMD INSTALL Rserve.tar.gz && \
     cd RevoMath && bash RevoMath.sh
 
