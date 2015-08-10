@@ -46,7 +46,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
   libssl-dev
 
 RUN apt-get build-dep --no-install-recommends -y \
-  r-cran-rserve
+  r-cran-rserve \
   r-base
 
 # --------------
