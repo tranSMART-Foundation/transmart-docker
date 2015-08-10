@@ -10,7 +10,9 @@ ENV war_url="https://owncloud.etriks.org/index.php/s/E6RplJ8Hie3p2kU/download"
 ENV jdk_heap=4G
 ENV jdk_url="http://download.oracle.com/otn-pub/java/jdk/8u51-b16/jdk-8u51-linux-x64.tar.gz"
 ENV ubuntu_packages="libcairo2-dev php5-cli php5-json gfortran g++ libreadline-dev \
-                      libxt-dev libpango1.0-dev texlive-fonts-recommended tex-gyre fonts-dejavu-core"
+                      libxt-dev libpango1.0-dev texlive-fonts-recommended tex-gyre fonts-dejavu-core \
+                      libc6 libcairo2 libgfortran3 libglib2.0-0 libgomp1 libjpeg8 liblzma5 libpango-1.0-0 libpangocairo-1.0-0 \
+                      libpcre3 libpng12-0 libreadline6 libtcl8.5 libtiff5 libtk8.5 libx11-6 libxt6 zlib1g"
 ENV r_debpackage_url="https://owncloud.etriks.org/index.php/s/mwGXYd3wopFVFza/download"
 ENV r_revomath_url="https://owncloud.etriks.org/index.php/s/lAUQz00IQICns9m/download"
 ENV r_rserve_url="http://www.rforge.net/src/contrib/Rserve_1.8-4.tar.gz"
@@ -93,7 +95,6 @@ RUN wget -q "$r_debpackage_url" -O RRO.deb && \
     wget -q "$r_revomath_url" -O RevoMath.tar.gz && \
     wget -q "$r_rserve_url" -O Rserve.tar.gz && \
     dpkg -i RRO.deb && \
-    apt-get install -f -y && \
     tar xzf RevoMath.tar.gz && \
     R CMD BATCH --slave R_pkgs_cran.R && \
     R CMD BATCH --slave R_pkgs_bioconductor.R && \
