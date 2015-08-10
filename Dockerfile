@@ -89,7 +89,7 @@ RUN sed -i 's/'localhost'/'*'/' /etc/postgresql/9.3/main/postgresql.conf
 WORKDIR /tmp
 RUN wget -q "$r_debpackage_url" -O RRO.deb && \
     wget -q "$r_revomath_url" -O RevoMath.tar.gz && \
-    wget -q "$r_rserve_url" -o Rserve.tar.gz && \
+    wget -q "$r_rserve_url" -O Rserve.tar.gz && \
     dpkg -i RRO.deb && \
     tar xzf RevoMath.tar.gz
 ADD includes/R/Rserve.conf /etc/Rserve.conf
