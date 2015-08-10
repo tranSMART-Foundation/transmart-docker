@@ -87,13 +87,18 @@ RUN sed -i 's/'localhost'/'*'/' /etc/postgresql/9.3/main/postgresql.conf
 
 # R
 WORKDIR /tmp
+ADD includes/R/Rserve.conf /etc/Rserve.conf
+ADD includes/R/R_pkgs*
 RUN wget -q "$r_debpackage_url" -O RRO.deb && \
     wget -q "$r_revomath_url" -O RevoMath.tar.gz && \
     wget -q "$r_rserve_url" -O Rserve.tar.gz && \
     dpkg -i RRO.deb && \
-    tar xzf RevoMath.tar.gz
-ADD includes/R/Rserve.conf /etc/Rserve.conf
-ADD includes/R/R_pkgs*
+    tar xzf RevoMath.tar.gz && \
+    R CMD BATCH --slave R_pkgs_cran.R && \
+    R CMD BATCH --slave R_pkgs_bioconductor.R && \
+    R CMD BATCH --slave R_pkgs_update.R && \
+    R CMD INSTALL Rserve.tar.gz && \
+    cd RevoMath && bash RevoMath.sh
 
 # tomcat7
 RUN apt-get install --no-install-recommends -y tomcat7 tomcat7-common && \
