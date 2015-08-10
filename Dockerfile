@@ -107,7 +107,7 @@ RUN wget -q "$r_debpackage_url" -O RRO.deb && \
 # tomcat7
 RUN apt-get install --no-install-recommends -y tomcat7 tomcat7-common && \
     mkdir -p /usr/share/tomcat7 && chown tomcat7:tomcat7 /usr/share/tomcat7
-
+WORKDIR /tmp/transmart-data
 RUN bash -c "source vars;TSUSER_HOME=/usr/share/tomcat7/ make -C config/ install && make -C solr/ solr_home"
 
 # --------------
@@ -118,6 +118,7 @@ RUN echo JAVA_OPTS=\"-server -d64 -XX:+AggressiveOpts -XX:+UseAES -XX:+UseAESInt
     chmod +x /usr/share/tomcat7/bin/setenv.sh
 
 # Oracle JDK
+WORKDIR /tmp
 RUN wget -q --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" $jdk_url && \
     tar xzf jdk-8u51-linux-x64.tar.gz -C /usr/lib/jvm
 
