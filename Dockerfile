@@ -6,11 +6,14 @@ LABEL Description="tranSMART 1.2.x eTRIKS All-In-One instance in order to test t
 
 # Core vars
 
-ENV war_url=https://owncloud.etriks.org/index.php/s/E6RplJ8Hie3p2kU/download
+ENV war_url="https://owncloud.etriks.org/index.php/s/E6RplJ8Hie3p2kU/download"
 ENV jdk_heap=4G
-ENV jdk_url=http://download.oracle.com/otn-pub/java/jdk/8u51-b16/jdk-8u51-linux-x64.tar.gz
+ENV jdk_url="http://download.oracle.com/otn-pub/java/jdk/8u51-b16/jdk-8u51-linux-x64.tar.gz"
 ENV ubuntu_packages="libcairo2-dev php5-cli php5-json gfortran g++ libreadline-dev \
                       libxt-dev libpango1.0-dev texlive-fonts-recommended tex-gyre fonts-dejavu-core"
+ENV r_debpackage_url="https://owncloud.etriks.org/index.php/s/mwGXYd3wopFVFza/download"
+ENV r_revomath_url="https://owncloud.etriks.org/index.php/s/lAUQz00IQICns9m/download"
+ENV r_rserve_url="http://www.rforge.net/src/contrib/Rserve_1.8-4.tar.gz"
 
 # tranSMART vars
 ENV PGDATABASE=transmart
@@ -82,29 +85,30 @@ RUN sed -i 's/'localhost'/'*'/' /etc/postgresql/9.3/main/postgresql.conf
 
 # --------------
 
-# tranSMART & R
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv 3375DA21 && \
-    echo deb http://apt.thehyve.net/internal/ trusty main > /etc/apt/sources.list.d/hyve_internal.list && \
-    apt-get update
+# R
+WORKDIR /tmp
+RUN wget -q "$r_debpackage_url" -O RRO.deb && \
+    wget -q "$r_revomath_url" -O RevoMath.tar.gz && \
+    wget -q "$r_rserve_url" -o Rserve.tar.gz && \
+    dpkg -i RRO.deb && \
+    tar xzf RevoMath.tar.gz
+ADD includes/R/Rserve.conf /etc/Rserve.conf
+ADD includes/R/R_pkgs*
 
-RUN apt-get install --no-install-recommends -y tomcat7 tomcat7-common \
-    transmart-r && \
+# tomcat7
+RUN apt-get install --no-install-recommends -y tomcat7 tomcat7-common && \
     mkdir -p /usr/share/tomcat7 && chown tomcat7:tomcat7 /usr/share/tomcat7
 
 RUN bash -c "source vars;TSUSER_HOME=/usr/share/tomcat7/ make -C config/ install && make -C solr/ solr_home"
 
-ADD includes/Rserve.conf /etc/Rserve.conf
-
 # --------------
 
 # Java
-
 ADD includes/setenv.sh /usr/share/tomcat7/bin/setenv.sh
 RUN echo JAVA_OPTS=\"-server -d64 -XX:+AggressiveOpts -XX:+UseAES -XX:+UseAESIntrinsics -XX:MaxHeapSize=$jdk_heap\" >> /usr/share/tomcat7/bin/setenv.sh && \
     chmod +x /usr/share/tomcat7/bin/setenv.sh
 
 # Oracle JDK
-WORKDIR /tmp
 RUN wget -q --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" $jdk_url && \
     tar xzf jdk-8u51-linux-x64.tar.gz -C /usr/lib/jvm
 
@@ -114,7 +118,7 @@ RUN wget -q --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3
 ADD includes/Config-eTRIKS.groovy /usr/share/tomcat7/.grails/transmartConfig/Config.groovy
 ADD includes/tomcat7 /etc/default/tomcat7
 
-# WAR
+# tranSMART WAR
 RUN wget -q -O /var/lib/tomcat7/webapps/transmart.war "$war_url"
 
 # --------------
