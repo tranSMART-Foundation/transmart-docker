@@ -34,7 +34,7 @@ USER root
 
 # Core
 RUN apt-get update && apt-get install --no-install-recommends -y \
-  make   \
+  build-essential   \
   curl   \
   git    \
   tar    \
@@ -44,7 +44,8 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
   rsync \
   postgresql \
   openjdk-7-jdk \
-  screen
+  screen \
+  $ubuntu_packages
 
 # --------------
 
@@ -63,7 +64,6 @@ RUN cd /tmp && \
 
 WORKDIR /tmp/transmart-data
 
-RUN apt-get install --no-install-recommends -y build-essential $ubuntu_packages
 RUN bash -c "make -C env /var/lib/postgresql/tablespaces && \
     make -C env update_etl data-integration ../vars"
 
