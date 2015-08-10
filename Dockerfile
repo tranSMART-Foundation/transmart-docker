@@ -1,6 +1,6 @@
 # eTRIKS tranSMART 1.2.x All-In-One deployment
 
-FROM ubuntu:14.04
+FROM debian:latest
 MAINTAINER Leslie-A DENIS <leslie-alexandre.denis@cc.in2p3.fr>
 LABEL Description="tranSMART 1.2.x eTRIKS All-In-One instance in order to test the product deployment" Vendor="eTRIKS" Version="1.0"
 
@@ -98,9 +98,9 @@ RUN wget -q "$r_debpackage_url" -O RRO.deb && \
     wget -q "$r_rserve_url" -O Rserve.tar.gz && \
     dpkg -i RRO.deb && \
     tar xzf RevoMath.tar.gz && \
-    R CMD BATCH R_pkgs_cran.R && \
-    R CMD BATCH R_pkgs_bioconductor.R && \
-    R CMD BATCH R_pkgs_update.R && \
+    R --no-save --no-restore --no-readline --verbose -f R_pkgs_cran.R && \
+    R --no-save --no-restore --no-readline --verbose R_pkgs_bioconductor.R && \
+    R --no-save --no-restore --no-readline --verbose R_pkgs_update.R && \
     R CMD INSTALL Rserve.tar.gz && \
     cd RevoMath && bash RevoMath.sh
 
