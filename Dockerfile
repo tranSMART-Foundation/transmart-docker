@@ -1,11 +1,12 @@
 # eTRIKS tranSMART 1.2.x All-In-One deployment
 
-FROM debian:latest
+FROM ubuntu:latest
 MAINTAINER Leslie-A DENIS <leslie-alexandre.denis@cc.in2p3.fr>
 LABEL Description="tranSMART 1.2.x eTRIKS All-In-One instance in order to test the product deployment" Vendor="eTRIKS" Version="1.0"
 
 # Core vars
-
+ENV deps_pkgs="libcairo2-dev php5-cli php5-json gfortran g++ libreadline-dev \
+               libxt-dev libpango1.0-dev texlive-fonts-recommended tex-gyre fonts-dejavu-core"
 ENV war_url="https://owncloud.etriks.org/index.php/s/E6RplJ8Hie3p2kU/download"
 ENV jdk_heap=4G
 ENV jdk_url="http://download.oracle.com/otn-pub/java/jdk/8u51-b16/jdk-8u51-linux-x64.tar.gz"
@@ -43,16 +44,18 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
   screen \
   php5-cli \
   php5-json \
-  libssl-dev
+  libssl-dev \
+  locales \
+  $deps_pkgs
 
 RUN apt-get build-dep --no-install-recommends -y \
-  r-cran-rserve \
-  r-base
+  r-cran-rserve
 
 # --------------
 
 # Locale setup
 RUN locale-gen en_US.UTF-8
+ENV LANGUAGE en_US:en
 ENV LANG en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 
@@ -77,7 +80,7 @@ RUN bash -c "curl -s get.gvmtool.net | bash && \
 
 # Public data loading
 RUN service postgresql start && \
-    bash -c "source vars;source "$HOME/.gvm/bin/gvm-init.sh";make -j4 postgres && \
+    bash -lc "source vars;make -j4 postgres && \
     make update_datasets && \
     make -C samples/postgres load_clinical_GSE8581 && \
     make -C samples/postgres load_ref_annotation_GSE8581 && \
