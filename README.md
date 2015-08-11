@@ -42,7 +42,7 @@ These commands will deploy an eTRIKS-tranSMART environnment with the latest tran
 
 #### Access
 
-    Launch your favorite browser and go to http://transmartIP/transmart
+    Launch your favorite browser and go to http://transmartIP
 
 #### Debug and core components
 
@@ -73,6 +73,8 @@ Check the logs :
 * Oracle JDK 1.8u51
 * tranSMART 1.2.x
 * Groovy 2.4.4
+* RRO 3.2.0
+* Rserve 1.8.x
 
 ## Other Docker deployments
 There is few versions and perceptions of this setup, here is the list of what I know :

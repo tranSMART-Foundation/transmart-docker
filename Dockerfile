@@ -132,7 +132,8 @@ ADD includes/Config-eTRIKS.groovy /usr/share/tomcat7/.grails/transmartConfig/Con
 ADD includes/tomcat7 /etc/default/tomcat7
 
 # tranSMART WAR
-RUN wget -q -O /var/lib/tomcat7/webapps/transmart.war "$war_url"
+RUN rm -r /var/lib/tomcat7/webapps/ROOT && \
+    wget -q -O /var/lib/tomcat7/webapps/ROOT.war "$war_url"
 
 # --------------
 
