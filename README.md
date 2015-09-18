@@ -85,6 +85,7 @@ Check the logs :
 
 #### Essential components used
 
+* Ubuntu 14.04.3 (trusty)
 * PostgreSQL 9.3
 * Tomcat7
 * Oracle JDK 1.8u51
@@ -97,4 +98,5 @@ Check the logs :
 There are a few versions (alternatives) of this setup, some of which are:
 * [QuartzBio](https://github.com/quartzbio/transmart-docker)
 * [io-informatics](https://github.com/io-informatics/transmart-docker)
-* Also: search GitHub for "transmart docker". 
+* [the eTRIKS project's Portal] (https://portal.etriks.org/Portal/transmartRelease/transmartDocker)
+* And, of course: search GitHub for "transmart docker". 
