@@ -1,13 +1,13 @@
-# eTRIKS tranSMART 1.2.x All-In-One deployment
+# Foundation tranSMART version: release-1.2.5 All-In-One deployment
 
 FROM ubuntu:latest
-MAINTAINER Leslie-A DENIS <leslie-alexandre.denis@cc.in2p3.fr>
-LABEL Description="tranSMART 1.2.x eTRIKS All-In-One instance in order to test the product deployment" Vendor="eTRIKS" Version="1.0"
+MAINTAINER Terry Weymouth <terry.weymouth@transmartfoundation.org>
+LABEL Description="tranSMART web app, and supporting tools (SOLR, R, PostgreSQL) release version" Vendor="tranSMART Foundation" Version="1.2.5"
 
 # Core vars
 ENV deps_pkgs="libcairo2-dev php5-cli php5-json gfortran g++ libreadline-dev \
                libxt-dev libpango1.0-dev texlive-fonts-recommended tex-gyre fonts-dejavu-core"
-ENV war_url="https://owncloud.etriks.org/index.php/s/E6RplJ8Hie3p2kU/download"
+ENV war_url="https://ci.transmartfoundation.org/browse/DEPLOY-TRAPP/latestSuccessful/artifact/shared/transmart.war/transmart.war"
 ENV jdk_heap=4G
 ENV jdk_url="http://download.oracle.com/otn-pub/java/jdk/8u51-b16/jdk-8u51-linux-x64.tar.gz"
 ENV r_debpackage_url="https://owncloud.etriks.org/index.php/s/mwGXYd3wopFVFza/download"
@@ -74,9 +74,10 @@ RUN bash -c "make -C env /var/lib/postgresql/tablespaces && \
 
 # Groovy installation
 RUN bash -c "curl -s get.gvmtool.net | bash && \
-    source "$HOME/.gvm/bin/gvm-init.sh" && \
-    gvm install groovy && \
-    gvm default groovy 2.4.4"
+	source /root/.sdkman/bin/sdkman-init.sh && \
+	sdk install groovy && \
+    sdk default groovy 2.4.4 && \
+    groovy --version"
 
 # Public data loading
 RUN service postgresql start && \
@@ -115,21 +116,22 @@ RUN bash -c "source vars;TSUSER_HOME=/usr/share/tomcat7/ make -C config/ install
 
 # --------------
 
-# Java
+# tomcat Java options and others
 ADD includes/setenv.sh /usr/share/tomcat7/bin/setenv.sh
 RUN echo JAVA_OPTS=\"-server -d64 -XX:+AggressiveOpts -XX:+UseAES -XX:+UseAESIntrinsics -XX:MaxHeapSize=$jdk_heap\" >> /usr/share/tomcat7/bin/setenv.sh && \
     chmod +x /usr/share/tomcat7/bin/setenv.sh
 
+# does not appear to be needed! - java version = java version "1.7.0_79" == OpenJDK Runtime Environment (IcedTea 2.5.6) (7u79-2.5.6-0ubuntu1.14.04.1)
 # Oracle JDK
-WORKDIR /tmp
-RUN wget -q --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" $jdk_url && \
-    tar xzf jdk-8u51-linux-x64.tar.gz -C /usr/lib/jvm
+# WORKDIR /tmp
+# RUN wget -q --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" $jdk_url && \
+#    tar xzf jdk-8u51-linux-x64.tar.gz -C /usr/lib/jvm
 
 # --------------
 
 # tranSMART Config
 ADD includes/Config-eTRIKS.groovy /usr/share/tomcat7/.grails/transmartConfig/Config.groovy
-ADD includes/tomcat7 /etc/default/tomcat7
+# ADD includes/tomcat7 /etc/default/tomcat7 -- does nothing??
 
 # tranSMART WAR
 RUN rm -r /var/lib/tomcat7/webapps/ROOT && \
