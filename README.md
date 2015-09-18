@@ -1,13 +1,11 @@
-# tranSMART Foundation's transmartApp demo
+# Docker build of transmartApp demo
 
-Use Docker to build a single-machine version of transmart, with limited demo data,
-to demo functionality and provide bases for tests. 
+Use Docker to build a single-machine version of transmart for demos of 
+functionality and to provide a platform for tests. 
 
-- Provenance
--- draws heavily from upstream fork - https://github.com/grumpycatt/transmart-docker
-- Other sources
--- https://github.com/quartzbio/transmart-docker
--- https://github.com/io-informatics/transmart-docker
+- Provenance: draws heavily from upstream fork - https://github.com/grumpycatt/transmart-docker
+- Other sources, https://github.com/quartzbio/transmart-docker and
+https://github.com/io-informatics/transmart-docker
 
 ## Deployment
 This is an all-in-one tranSMART setup. All processes run on a container from
@@ -33,13 +31,14 @@ Recommended requirements :
 
 ### How to start
 
-This is a **Dockerfile** which **needs** a special compute host with **Docker engine** 
-installed on it. To proceed to, you can follow few steps described
+There is a **Dockerfile** here, along with supporting material. 
+One must use the **docker** command along with a special compute host,
+a **docker machine**. To install these elements, follow the install steps described
 on the official Docker website: https://docs.docker.com/
 
 Docker must run in the context of a docker environment linked to a running docker-machine; 
-once set up the, "docker" command will be available. In addition, you will need to know the
-docker-machine's local IP address; use the command docker-machine ip default (where default
+once set up the, docker command will be available. In addition, you will need to know the
+docker-machine's local IP address; use the command **docker-machine ip default** (where default
 is the name of the docker-machine) to obtain the machine's local IP address, 
 referred to as *transmartIP*, below.
 
